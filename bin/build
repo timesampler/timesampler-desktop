@@ -1,0 +1,45 @@
+#!/usr/bin/env ruby
+require 'pathname'
+root = Pathname(__dir__ + '/..')
+
+# ENV['BUNDLE_GEMFILE'] = root.join('bin/Gemfile').to_s
+require 'bundler'
+Bundler.require
+
+base = root.join('app')
+src = root.join('src')
+
+environment = Sprockets::Environment.new
+environment.append_path src
+Opal.paths.each { |p| environment.append_path p }
+environment.cache = Sprockets::Cache::FileStore.new('tmp')
+
+File.write base.join('app.js').to_s,           environment['app.js'].to_s+Opal::Sprockets.load_asset('app', environment)
+File.write base.join('client.js').to_s,        environment['client.js']
+File.write base.join('client/jquery.js').to_s, environment['client/jquery.js']
+File.write base.join('index.html'), <<-HTML
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>TimeSampler</title>
+    <style>
+    body {
+      background: #e5e5e5;
+      color: #333;
+    }
+    body, * {
+      font-family: sans-serif;
+    }
+    </style>
+  </head>
+  <body>
+    <h1>TimeSampler</h1>
+    <div id="content">
+      <div controller="TokenController#show"><em>loading…</em></div>
+    </div>
+    <script src="./client.js"></script>
+    <script>#{Opal::Sprockets.load_asset('client', environment)}</script>
+  </body>
+</html>
+HTML
