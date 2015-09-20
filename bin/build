@@ -20,6 +20,11 @@ Sprockets.register_preprocessor 'text/html', Sprockets::DirectiveProcessor.new(
   comments: ['--', ['<!--', '-->']] + ['#', ['<!--', '-->']]
 )
 
+# For ERB
+Sprockets.register_preprocessor 'text/plain', Sprockets::DirectiveProcessor.new(
+  comments: ['#', ['<%', '%>']] + ['#', ['<%#', '-%>']]
+)
+
 base.join('client').mkpath
 
 File.write base.join('app.js').to_s,           environment['app.js'].to_s+Opal::Sprockets.load_asset('app', environment)
