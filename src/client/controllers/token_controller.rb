@@ -2,7 +2,7 @@ require_tree './views/token'
 
 class TokenController < Controller
   def show
-    return edit if token.nil? or token.empty?
+    return edit if token.empty?
     render 'show', token: token
   end
 
@@ -14,7 +14,7 @@ class TokenController < Controller
   private
 
   def token
-    Remote.token
+    Remote.token.to_s
   end
 
   def save_token
