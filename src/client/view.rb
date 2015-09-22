@@ -6,6 +6,8 @@ module View
   def render(name, locals = {})
     context = OpenStruct.new(locals)
     context.extend View
-    Template[name].render(context)
+    template = Template[name]
+    raise "can't find template #{name.inspect}" unless template
+    template.render(context)
   end
 end
