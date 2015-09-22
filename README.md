@@ -13,6 +13,6 @@ bundle install
 watching for changes (requires [fswatch](https://github.com/emcrisostomo/fswatch)):
 
 ```ruby
-fswatch -r ./src | ruby -ne 'system "p $_; ./bin/build"; p [:built, $_]'
+fswatch -r ./src | ruby -ne 'p $_; system "./bin/build"; p [:built, $_]'
 ```
 
