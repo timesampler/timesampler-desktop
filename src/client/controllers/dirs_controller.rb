@@ -10,6 +10,18 @@ class DirsController < Controller
     render 'edit', dirs: dirs
   end
 
+  def add_dirs
+    Remote.add_dirs
+    edit
+  end
+
+  def remove_dir(index)
+    dirs = self.dirs.clone
+    dirs.delete_at(index)
+    Remote.set_dirs dirs
+    edit
+  end
+
 
 
   private

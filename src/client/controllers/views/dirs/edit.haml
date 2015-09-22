@@ -1,11 +1,12 @@
 %h2 Watched Dirs
 
+%a(href="#" e-click="show") cancel edit
+
 %ul
   - dirs.each_with_index do |dir, index|
     %li
       = dir
-      %a(href="#" e-click="remove(#{index})")
+      %a(href="#" e-click="remove_dir(#{index})") &times;
 
-%form
-  %input(type="text" placeholder="12jhg312…" e-change="save_token" value=token)
 
+%a(href="#" e-click="add_dirs") add dirs

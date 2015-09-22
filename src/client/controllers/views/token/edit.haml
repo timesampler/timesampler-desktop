@@ -1,4 +1,9 @@
 %h2 Token
-%form
-  %input.val-token(type="text" placeholder="12jhg312…" e-change="save_token" value=token)
 
+%a(href="#" e-click="show") cancel edit
+
+%form(e-submit="save_token" )
+  %p
+    %input.val-token(type="text" placeholder="12jhg312…" value=token style="width:100%; font: 1em/1 sans-serif;")
+
+  %input(type="submit" value="Save")

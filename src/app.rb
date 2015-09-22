@@ -68,17 +68,13 @@ module Dirs
     self.value += [dir]
   end
 
-  def remove(dir)
-    value.delete(dir)
-  end
-
   def value
     @value ||= File.exist?(path) ? parse(File.read(path)) : []
-    p @value
   end
 
   def value= value
     File.write(path, dump(value))
+    p [:Dirs_value=, value]
     @value = value
   end
 
@@ -98,8 +94,13 @@ end
 Electron::IPC.on :set_token, -> _event, value { Token.value = value }
 Electron::IPC.on :get_token, -> event { Native(event).returnValue = Token.value }
 Electron::IPC.on :get_dirs,  -> event { Native(event).returnValue = Dirs.value }
+Electron::IPC.on :set_dirs,  -> _event, value { Dirs.value = value }
 Electron::IPC.on :add_dirs,  -> event do
-  result = $window.open_dialog(title: "Select a folder", properties: %w[openDirectory multiSelections])
+  require 'electron/dialog'
+  # result = $window.open_dialog(title: "Select a folder", properties: %w[openDirectory multiSelections])
+  # result = Electron::Dialog.showOpenDialog(nil, title: "Select a folder", properties: %w[openDirectory multiSelections])
+  result = `(#{Electron::Dialog.to_n}).showOpenDialog(#{{title: "Select a folder", properties: %w[openDirectory multiSelections]}.to_n})`
+  p [:add_dirs, result]
   Dirs.value += result if result
   Native(event).returnValue = Dirs.value
 end
