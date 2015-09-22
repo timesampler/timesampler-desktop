@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/opal/opal.git
-  revision: 7a00e66688859fa1acdecf1d0a9d9f8691a9580e
+  revision: 208421af2f991df40e9035b3b0b965f98542a776
   branch: master
   specs:
     opal (0.9.0.dev)
