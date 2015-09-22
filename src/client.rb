@@ -31,13 +31,6 @@ module Remote
   end
 end
 
-%w[click submit change].each do |event_name|
-  Document.on event_name, "[e-#{event_name}]" do |event|
-    event.prevent
-    element = event.current_target
-    $controller.send(element["e-#{event_name}"])
-  end
-end
 
 $controllers = []
 
@@ -54,6 +47,14 @@ Document.on :render do
     $console.log controller, name, action
     $controllers << controller
     controller.send(action || :index)
+
+    %w[click submit change].each do |event_name|
+      element.on event_name, "[e-#{event_name}]" do |event|
+        event.prevent
+        element = event.current_target
+        controller.send(element["e-#{event_name}"])
+      end
+    end
   end
 end
 
