@@ -1,6 +1,7 @@
 GIT
   remote: git://github.com/opal/opal.git
-  revision: 79d73fae1972b328a74a8d7c14cfb8c260c92279
+  revision: 7a00e66688859fa1acdecf1d0a9d9f8691a9580e
+  branch: master
   specs:
     opal (0.9.0.dev)
       hike (~> 1.2)
@@ -35,4 +36,4 @@ DEPENDENCIES
   sprockets
 
 BUNDLED WITH
-   1.10.5
+   1.10.6
