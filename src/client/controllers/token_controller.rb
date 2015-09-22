@@ -13,10 +13,6 @@ class TokenController < Controller
 
   private
 
-  def controller_name
-    :token
-  end
-
   def token
     Remote.token
   end
