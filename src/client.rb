@@ -22,8 +22,13 @@ module Remote
     @token ||= Electron::IPC.sendSync(:get_token)
   end
 
-  @dirs = []
-  attr_reader :dirs
+  def dirs= value
+    @dirs = Electron::IPC.sendSync(:add_dirs, value)
+  end
+
+  def dirs
+    @dirs ||= Electron::IPC.sendSync(:get_dirs)
+  end
 end
 
 %w[click submit change].each do |event_name|

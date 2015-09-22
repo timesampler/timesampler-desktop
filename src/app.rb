@@ -52,7 +52,8 @@ module Token
   end
 
   def value= value
-    @value = File.write(path, value)
+    File.write(path, value)
+    @value = value
   end
 
   def path
@@ -60,5 +61,45 @@ module Token
   end
 end
 
+module Dirs
+  extend self
+
+  def add(dir)
+    self.value += [dir]
+  end
+
+  def remove(dir)
+    value.delete(dir)
+  end
+
+  def value
+    @value ||= File.exist?(path) ? parse(File.read(path)) : []
+    p @value
+  end
+
+  def value= value
+    File.write(path, dump(value))
+    @value = value
+  end
+
+  def parse(string)
+    string.split("\n").map(&:strip).reject(&:empty?)
+  end
+
+  def dump(value)
+    value.join("\n")
+  end
+
+  def path
+    @path ||= File.expand_path("~/.timesampler/watch_paths")
+  end
+end
+
 Electron::IPC.on :set_token, -> _event, value { Token.value = value }
 Electron::IPC.on :get_token, -> event { Native(event).returnValue = Token.value }
+Electron::IPC.on :get_dirs,  -> event { Native(event).returnValue = Dirs.value }
+Electron::IPC.on :add_dirs,  -> event do
+  result = $window.open_dialog(title: "Select a folder", properties: %w[openDirectory multiSelections])
+  Dirs.value += result if result
+  Native(event).returnValue = Dirs.value
+end

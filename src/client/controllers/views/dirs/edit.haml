@@ -1,0 +1,11 @@
+%h2 Watched Dirs
+
+%ul
+  - dirs.each_with_index do |dir, index|
+    %li
+      = dir
+      %a(href="#" e-click="remove(#{index})")
+
+%form
+  %input(type="text" placeholder="12jhg312…" e-change="save_token" value=token)
+
