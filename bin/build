@@ -31,3 +31,4 @@ File.write base.join('app.js').to_s,           environment['app.js'].to_s+Opal::
 File.write base.join('client.js').to_s,        environment['client.js']
 File.write base.join('client/jquery.js').to_s, environment['client/jquery.js']
 File.write base.join('index.html').to_s,       environment['index.html']
+File.write base.join('package.json').to_s,     environment['package.json']
